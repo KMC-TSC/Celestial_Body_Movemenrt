@@ -8,19 +8,53 @@ window = pg.display.set_mode((1000,500))
 Clock = pg.time.Clock()
 pg.display.set_caption('CELESTIAL BODIES DEMO')  
 SpaceImage1 = pg.image.load('Space2.jpeg').convert_alpha()
-SpaceImage1 = pg.transform.scale(SpaceImage1, (1000, 500))
-x = 0.0
-y = -125.0
-a = 0.0
+SpaceImage1 = pg.transform.scale(SpaceImage1, (500, 500))
+
+class Planet:
+    def __init__(self, Name, Mass, Radius, Xposition, Yposition):       
+        self.Name = Name
+        self.Mass = Mass
+        self.Radius = Radius
+        self.Xposition = Xposition
+        self.Yposition = Yposition
+        self.update_text()
+
+    def update_text(self):
+        font_size = max(15, int(self.Radius * 0.9))  # Prevent font size from being too small
+        TextFont = pg.font.Font(None, font_size)
+        self.text = TextFont.render(self.Name, True, 'White')
+
+    def ChangeRadius(self, NewRadius):
+        self.Radius= NewRadius
+    def ChangeMass(self, NewMass):
+        self.Mass= NewMass
+    def ChangeName(self, NewName):
+        self.Name= NewName  
+
+    def Rotate(self, angle_degrees):
+        angle = math.radians(angle_degrees)
+        x, y = self.Xposition, self.Yposition
+        self.Xposition = x*math.cos(angle) - y*math.sin(angle)
+        self.Yposition = x*math.sin(angle) + y*math.cos(angle)
+
+
+    def Create(self,Colour):
+        self.Colour = Colour
+        pg.draw.circle(window,(self.Colour),(self.Xposition,self.Yposition),self.Radius)
+        window.blit(self.text, (self.Xposition-(self.Radius/2), self.Yposition-self.Radius-30))
+        
+print("--[TEST AREA]--")  
+d = Planet("Sun", 120000, 30, 100, 200)
+print(f"Radius of {d.Name} is {d.Radius}")
+print(f"Mass of {d.Name} is {d.Mass}")
+print(f"Original Coordinates of {d.Name} are ({d.Xposition},{d.Yposition})")
+
+print("--[TEST AREA]--")    
 
 while True:
-    a+=0.08
-    if a > 2*math.pi:
-        a = 0
-    xp = (x*math.cos(a)-y*math.sin(a))+100
-    yp = x*math.sin(a)+y*math.cos(a)
     window.blit(SpaceImage1,(0,0))
-    pg.draw.circle(window, (225, 100, 0), (xp+500, yp+250), 50)  
+    d.Create((225,225,0))  
+    d.Rotate(2)
     for event in pg.event.get():
         if event.type == pg.QUIT:
             pg.quit()

@@ -11,13 +11,16 @@ SpaceImage1 = pg.image.load('Space2.jpeg').convert_alpha()
 SpaceImage1 = pg.transform.scale(SpaceImage1, (500, 500))
 
 class Planet:
-    def __init__(self, Name, Mass, Radius, Xposition, Yposition):       
+    def __init__(self, Name, Mass, Radius, Xposition, Yposition,VeloX,VeloY):       
         self.Name = Name
         self.Mass = Mass
         self.Radius = Radius
         self.Xposition = Xposition
         self.Yposition = Yposition
+        self.VeloX = VeloX
+        self.VeloY = VeloY
         self.update_text()
+        
 
     def update_text(self):
         font_size = max(15, int(self.Radius * 0.9))  # Prevent font size from being too small
@@ -34,17 +37,19 @@ class Planet:
     def Rotate(self, angle_degrees):
         angle = math.radians(angle_degrees)
         x, y = self.Xposition, self.Yposition
-        self.Xposition = x*math.cos(angle) - y*math.sin(angle)
-        self.Yposition = x*math.sin(angle) + y*math.cos(angle)
+        self.Xposition = (x*math.cos(angle) - y*math.sin(angle))
+        self.Yposition = (x*math.sin(angle) + y*math.cos(angle))
 
 
     def Create(self,Colour):
+        if (self.VeloX < 0) or (self.VeloX >0):
+            self.Xposition += self.VeloX
         self.Colour = Colour
         pg.draw.circle(window,(self.Colour),(self.Xposition,self.Yposition),self.Radius)
         window.blit(self.text, (self.Xposition-(self.Radius/2), self.Yposition-self.Radius-30))
         
 print("--[TEST AREA]--")  
-d = Planet("Sun", 120000, 30, 100, 200)
+d = Planet("Sun", 120000, 10, 100, 200,3,0)
 print(f"Radius of {d.Name} is {d.Radius}")
 print(f"Mass of {d.Name} is {d.Mass}")
 print(f"Original Coordinates of {d.Name} are ({d.Xposition},{d.Yposition})")
@@ -54,7 +59,6 @@ print("--[TEST AREA]--")
 while True:
     window.blit(SpaceImage1,(0,0))
     d.Create((225,225,0))  
-    d.Rotate(2)
     for event in pg.event.get():
         if event.type == pg.QUIT:
             pg.quit()

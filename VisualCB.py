@@ -11,7 +11,7 @@ SpaceImage1 = pg.image.load('Space2.jpeg').convert_alpha()
 SpaceImage1 = pg.transform.scale(SpaceImage1, (500, 500))
 
 class Planet:
-    def __init__(self, Name, Mass, Radius, Xposition, Yposition,VeloX,VeloY):       
+    def __init__(self, Name:str, Mass:float, Radius:float, Xposition:float, Yposition:float, VeloX:float, VeloY:float):       
         self.Name = Name
         self.Mass = Mass
         self.Radius = Radius
@@ -27,14 +27,14 @@ class Planet:
         TextFont = pg.font.Font(None, font_size)
         self.text = TextFont.render(self.Name, True, 'White')
 
-    def ChangeRadius(self, NewRadius):
+    def ChangeRadius(self, NewRadius:float):
         self.Radius= NewRadius
-    def ChangeMass(self, NewMass):
+    def ChangeMass(self, NewMass:float):
         self.Mass= NewMass
-    def ChangeName(self, NewName):
+    def ChangeName(self, NewName:str):
         self.Name= NewName  
 
-    def Rotate(self, angle_degrees):
+    def Rotate(self, angle_degrees:float):
         angle = math.radians(angle_degrees)
         x, y = self.Xposition, self.Yposition
         self.Xposition = (x*math.cos(angle) - y*math.sin(angle))
@@ -47,6 +47,8 @@ class Planet:
         self.Colour = Colour
         pg.draw.circle(window,(self.Colour),(self.Xposition,self.Yposition),self.Radius)
         window.blit(self.text, (self.Xposition-(self.Radius/2), self.Yposition-self.Radius-30))
+
+    
         
 print("--[TEST AREA]--")  
 d = Planet("Sun", 120000, 10, 100, 200,3,0)

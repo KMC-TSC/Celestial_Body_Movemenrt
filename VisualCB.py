@@ -9,6 +9,7 @@ Clock = pg.time.Clock()
 pg.display.set_caption('CELESTIAL BODIES DEMO')  
 SpaceImage1 = pg.image.load('Space2.jpeg').convert_alpha()
 SpaceImage1 = pg.transform.scale(SpaceImage1, (500, 500))
+G = 6.674 * pow(10,-11)
 
 class Planet:
     def __init__(self, Name:str, Mass:float, Radius:float, Xposition:float, Yposition:float, VeloX:float, VeloY:float):       
@@ -40,7 +41,13 @@ class Planet:
         self.Xposition = (x*math.cos(angle) - y*math.sin(angle))
         self.Yposition = (x*math.sin(angle) + y*math.cos(angle))
 
-
+    def AccDueTo(self,other:Planet):
+        Radius = math.sqrt (((self.Xposition-other.Xposition)+(self.Yposition-other.Yposition))) 
+        return (G*other.Mass)/pow(Radius,2)
+    
+    #def Accelerate(self, AccDueTo(other)):
+        
+        
     def Create(self,Colour):
         if (self.VeloX < 0) or (self.VeloX >0):
             self.Xposition += self.VeloX

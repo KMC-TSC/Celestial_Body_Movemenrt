@@ -1,9 +1,9 @@
 import numpy as np
 import math
 print("-----------")
-x = 1.0
-y = 0.0
-a = 12.0*(math.pi/180)
+x = 4.0
+y = 3.0
+a = 90.0*(math.pi/180)
 
 for i in range(5):
     array = np.array([x*math.cos(a)-y*math.sin(a), x*math.sin(a)+y*math.cos(a)])

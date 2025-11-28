@@ -37,24 +37,25 @@ class Planet:
         x, y = self.Xposition, self.Yposition
         self.Xposition = (x*math.cos(angle) - y*math.sin(angle))
         self.Yposition = (x*math.sin(angle) + y*math.cos(angle))
-
+        self.angle = angle
     def XAccDueTo(self,other:Planet):
         Radius = math.sqrt ((pow((self.Xposition-other.Xposition),2)+pow((self.Yposition-other.Yposition),2))) 
         if (self.Yposition-other.Yposition) == 0:
             angle = math.pi/2 if (self.Xposition-other.Xposition) > 0 else -math.pi/2
         else:
-            angle = math.atan((self.Xposition-other.Xposition)/(self.Yposition-other.Yposition))
+            angle = math.atan2((self.Yposition-other.Yposition),(self.Xposition-other.Xposition))
         Acc = (G*other.Mass)/pow(Radius*Distance_Scale,2)
-        XAcc = (math.cos(angle)*Acc)/Distance_Scale
+        XAcc = -((math.cos(angle)*Acc)/Distance_Scale)
         self.VeloX+=XAcc
         self.XAcc = XAcc
+        self.angle = angle
          
     def YAccDueTo(self,other:Planet):
         Radius = math.sqrt ((pow((self.Xposition-other.Xposition),2)+pow((self.Yposition-other.Yposition),2))) 
         if (self.Yposition-other.Yposition) == 0:
             angle = math.pi/2 if (self.Xposition-other.Xposition) > 0 else -math.pi/2
         else:
-            angle = math.atan((self.Xposition-other.Xposition)/(self.Yposition-other.Yposition))
+            angle = -(math.atan((self.Yposition-other.Yposition)/(self.Xposition-other.Xposition)))
         Acc = (G*other.Mass)/pow(Radius*Distance_Scale,2)
         YAcc = (math.sin(angle)*Acc)/Distance_Scale
         self.VeloY+=YAcc
@@ -81,7 +82,7 @@ Su = Planet("Sun", 1989100, 695950, 250, 250,0.0,0.0,19000)
 print(f"Radius of {Su.Name} is {Su.Radius}")
 print(f"Mass of {Su.Name} is {Su.Mass}")
 print(f"Original Coordinates of {Su.Name} are ({Su.Xposition},{Su.Yposition})")
-Er = Planet("Earth", 5.97, 6371, 50, 250,-0.25,-.737,360)
+Er = Planet("Earth", 5.97, 6371, 450, 80,-0.01,1.0,360)
 print(f"Radius of {Er.Name} is {Er.Radius}")
 print(f"Mass of {Er.Name} is {Er.Mass}")
 print(f"Original Coordinates of {Er.Name} are ({Er.Xposition},{Er.Yposition})")
